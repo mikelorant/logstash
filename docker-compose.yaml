@@ -1,0 +1,47 @@
+version: '2.1'
+
+services:
+  logstash:
+    build: .
+    mem_limit: 1G
+    ports:
+    - '5044'
+    depends_on:
+    - elasticsearch
+
+  exporter:
+    image: alxrem/prometheus-logstash-exporter
+    ports:
+    - '9304'
+    command:
+    - "-logstash.host"
+    - "logstash"
+    depends_on:
+    - logstash
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.4.1
+    environment:
+      discovery.type: single-node
+      xpack.monitoring.collection.enabled: 'true'
+      bootstrap.memory_lock: 'true'
+      ES_JAVA_OPTS: -XshowSettings:vm
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+    - elasticsearch:/usr/share/elasticsearch/data
+    ports:
+    - '9200'
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:6.4.1
+    ports:
+    - '5601'
+    depends_on:
+    - elasticsearch
+
+volumes:
+  elasticsearch:
+    driver: local
