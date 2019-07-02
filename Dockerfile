@@ -7,6 +7,7 @@ RUN /usr/share/logstash/bin/logstash-plugin install logstash-filter-prune
 RUN /usr/share/logstash/bin/logstash-plugin install logstash-filter-json_encode
 RUN /usr/share/logstash/bin/logstash-plugin install logstash-input-kinesis
 RUN /usr/share/logstash/bin/logstash-plugin install logstash-output-kinesis
+RUN /usr/share/logstash/bin/logstash-plugin install logstash-output-google_bigquery
 # RUN /usr/share/logstash/bin/logstash-plugin install logstash-filter-de_dot
 # Above command does not work due to gem not being considered a valid logstash plugin.
 # The specification metadata is empty when installing from a remote source however when install locally works correctly.
