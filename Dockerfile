@@ -11,7 +11,7 @@ RUN /usr/share/logstash/bin/logstash-plugin install logstash-output-google_bigqu
 # RUN /usr/share/logstash/bin/logstash-plugin install logstash-filter-de_dot
 # Above command does not work due to gem not being considered a valid logstash plugin.
 # The specification metadata is empty when installing from a remote source however when install locally works correctly.
-RUN curl -L -o /tmp/logstash-filter-de_dot.gem https://gemfury.com/fairfaxblue/ruby:logstash-filter-de_dot/-/download && \
+RUN curl -L -o /tmp/logstash-filter-de_dot.gem https://manage.fury.io/2/indexes/ruby/fairfaxblue/download/logstash-filter-de_dot-1.1.0 && \
     /usr/share/logstash/bin/logstash-plugin install /tmp/logstash-filter-de_dot.gem && \
     rm /tmp/logstash-filter-de_dot.gem
 
