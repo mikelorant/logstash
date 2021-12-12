@@ -1,4 +1,4 @@
-FROM docker.elastic.co/logstash/logstash:6.8.20
+FROM docker.elastic.co/logstash/logstash:6.8.20 as base
 
 RUN sed -i '/source/a source "https://repo.fury.io/fairfaxblue/"' Gemfile
 
@@ -28,3 +28,13 @@ RUN { \
       echo '-Xverify:none'; \
       echo '-XshowSettings:vm' ; \
     } >> config/jvm.options
+
+FROM base AS jndiremove
+
+USER root
+RUN yum install --assumeyes zip
+RUN find /usr/share/logstash -xdev -name 'log4j-core*jar' -exec zip -q -d '{}' org/apache/logging/log4j/core/lookup/JndiLookup.class \;
+
+FROM base
+
+COPY --from=jndiremove /usr/share/logstash /usr/share/logstash
