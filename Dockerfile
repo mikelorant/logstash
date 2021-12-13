@@ -1,4 +1,4 @@
-FROM docker.elastic.co/logstash/logstash:6.8.20 as base
+FROM docker.elastic.co/logstash/logstash:6.8.21 as base
 
 RUN sed -i '/source/a source "https://repo.fury.io/fairfaxblue/"' Gemfile
 
