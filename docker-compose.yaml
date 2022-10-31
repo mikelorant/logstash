@@ -1,12 +1,10 @@
-version: '2.4'
-
 services:
   logstash:
     build: .
     mem_limit: 1G
     cpu_shares: 2048
     ports:
-    - '8080'
+    - 8080
     depends_on:
     - elasticsearch
     command: [
@@ -14,24 +12,13 @@ services:
       "input { http { } } output { elasticsearch { hosts => 'http://elasticsearch' } }"
     ]
 
-  exporter:
-    image: alxrem/prometheus-logstash-exporter
-    ports:
-    - '9304'
-    command:
-    - "-logstash.host"
-    - "logstash"
-    depends_on:
-    - logstash
-
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.8.21
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.8.23
     cpu_shares: 4096
     environment:
       discovery.type: single-node
-      xpack.monitoring.collection.enabled: 'true'
-      bootstrap.memory_lock: 'true'
-      ES_JAVA_OPTS: -XshowSettings:vm
+      xpack.monitoring.collection.enabled: "true"
+      bootstrap.memory_lock: "true"
     ulimits:
       memlock:
         soft: -1
@@ -39,12 +26,12 @@ services:
     volumes:
     - elasticsearch:/usr/share/elasticsearch/data
     ports:
-    - '9200'
+    - 9200
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:6.8.21
+    image: docker.elastic.co/kibana/kibana:6.8.23
     ports:
-    - '5601'
+    - 5601
     depends_on:
     - elasticsearch
 
